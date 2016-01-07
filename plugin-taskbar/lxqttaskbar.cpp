@@ -228,10 +228,10 @@ void LXQtTaskBar::groupBecomeEmptySlot()
 
     for (auto i = mKnownWindows.begin(); mKnownWindows.end() != i; )
     {
-        auto i_next = i + 1;
         if (group == *i)
-            mKnownWindows.erase(i);
-        i = i_next;
+            i = mKnownWindows.erase(i);
+        else
+            ++i;
     }
     mLayout->removeWidget(group);
     group->deleteLater();
@@ -306,14 +306,13 @@ void LXQtTaskBar::refreshTaskList()
     //emulate windowRemoved if known window not reported by KWindowSystem
     for (auto i = mKnownWindows.begin(), i_e = mKnownWindows.end(); i != i_e; )
     {
-        auto i_next = i + 1;
         if (0 > new_list.indexOf(i.key()))
         {
             WId window = i.key();
-            mKnownWindows.erase(i);
+            i = mKnownWindows.erase(i);
             emit windowRemoved(window);
-        }
-        i = i_next;
+        } else
+            ++i;
     }
 
     refreshPlaceholderVisibility();
