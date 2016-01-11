@@ -253,6 +253,7 @@ void LXQtTaskBar::addWindow(WId window, QString const & groupId)
         mGroupsHash.insert(groupId, group);
         group->setToolButtonsStyle(mButtonStyle);
     }
+    qWarning() << group->isPinned();
     group->addWindow(window);
 }
 /************************************************
@@ -262,6 +263,10 @@ void LXQtTaskBar::addWindow(WId window, QString const & groupId)
 void LXQtTaskBar::refreshTaskList()
 {
     QList<WId> new_list;
+
+    // Add/update pinned applications first
+    refreshPinnedApplications();
+
     // Just add new windows to groups, deleting is up to the groups
     for (auto const wnd: KWindowSystem::stackingOrder())
     {
@@ -283,6 +288,31 @@ void LXQtTaskBar::refreshTaskList()
     mKnownWindows.swap(new_list);
 
     refreshPlaceholderVisibility();
+}
+
+
+/************************************************
+
+ ************************************************/
+void LXQtTaskBar::refreshPinnedApplications()
+{
+    QList<QString> pinnedApplications;
+    LXQtTaskButton *button;
+    QString buttonId;
+    pinnedApplications << "A" << "B" << "C";
+
+    for (int i = 0; i < pinnedApplications.size(); i++) {
+        buttonId = pinnedApplications[i];
+        button = mPinnedButtons.value(buttonId);
+
+        if (!button) {
+            button = new LXQtTaskButton(0, this, this);
+            mLayout->addWidget(button);
+            button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+            button->setCheckable(false);
+            mPinnedButtons.insert(buttonId, button);
+        }
+    }
 }
 
 /************************************************

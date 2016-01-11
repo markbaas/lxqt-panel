@@ -80,6 +80,7 @@ LXQtTaskButton::LXQtTaskButton(const WId window, LXQtTaskBar * taskbar, QWidget 
     mOrigin(Qt::TopLeftCorner),
     mDrawPixmap(false),
     mParentTaskBar(taskbar),
+    mPinned(false),
     mDNDTimer(new QTimer(this))
 {
     Q_ASSERT(taskbar);
@@ -405,6 +406,32 @@ void LXQtTaskButton::closeApplication()
 /************************************************
 
  ************************************************/
+void LXQtTaskButton::pinApplication()
+{
+    mPinned = true;
+    // mParentTaskBar->pinApplication(mWindow);
+}
+
+/************************************************
+
+ ************************************************/
+void LXQtTaskButton::unpinApplication()
+{
+    mPinned = false;
+    // mParentTaskBar->pinApplication(mWindow);
+}
+
+/************************************************
+
+ ************************************************/
+bool LXQtTaskButton::isPinned()
+{
+    return mPinned;
+}
+
+/************************************************
+
+ ************************************************/
 void LXQtTaskButton::setApplicationLayer()
 {
     QAction* act = qobject_cast<QAction*>(sender());
@@ -560,6 +587,15 @@ void LXQtTaskButton::contextMenuEvent(QContextMenuEvent* event)
         a = menu->addAction(tr("Roll up"));
         a->setEnabled(info.actionSupported(NET::ActionShade) && !(state & NET::Hidden));
         connect(a, SIGNAL(triggered(bool)), this, SLOT(shadeApplication()));
+    }
+
+    if (mPinned) {
+        a = menu->addAction(tr("Unpin"));
+        connect(a, SIGNAL(triggered(bool)), this, SLOT(unpinApplication()));
+    }
+    else {
+        a = menu->addAction(tr("Pin"));
+        connect(a, SIGNAL(triggered(bool)), this, SLOT(pinApplication()));
     }
 
     /********** Layer menu **********/

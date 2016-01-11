@@ -92,6 +92,7 @@ private slots:
     void refreshTaskList();
     void refreshButtonRotation();
     void refreshPlaceholderVisibility();
+    void refreshPinnedApplications();
     void groupBecomeEmptySlot();
     void groupPopupShown(LXQtTaskGroup * const sender);
     void onWindowChanged(WId window, NET::Properties prop, NET::Properties2 prop2);
@@ -105,6 +106,7 @@ private:
     QHash<QString, LXQtTaskGroup*> mGroupsHash;
     QList<WId> mKnownWindows; //!< Ids of known windows (for emulating windowRemoved in case WId of app changes)
     LXQt::GridLayout *mLayout;
+    QHash<QString, LXQtTaskButton*> mPinnedButtons;
 
     // Settings
     Qt::ToolButtonStyle mButtonStyle;

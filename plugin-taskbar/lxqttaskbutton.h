@@ -88,6 +88,7 @@ public:
     /*! \return true if this buttom received DragEnter event (and no DragLeave event yet)
      * */
     bool hasDragAndDropHover() const;
+    bool isPinned();
 
 public slots:
     void raiseApplication();
@@ -97,6 +98,8 @@ public slots:
     void shadeApplication();
     void unShadeApplication();
     void closeApplication();
+    void pinApplication();
+    void unpinApplication();
     void moveApplicationToDesktop();
     void setApplicationLayer();
 
@@ -126,6 +129,7 @@ private:
     bool mDrawPixmap;
     LXQtTaskGroup * mParentGroup;
     LXQtTaskBar * mParentTaskBar;
+    bool mPinned;
 
     // Timer for when draggind something into a button (the button's window
     // must be activated so that the use can continue dragging to the window
