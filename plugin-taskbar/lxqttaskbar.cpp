@@ -429,17 +429,14 @@ void LXQtTaskBar::settingsChanged()
     // Delete all groups if grouping feature toggled and start over
     if (groupingEnabledOld != mGroupingEnabled)
     {
-        QList<LXQtTaskGroup*> group_list;
-        for (int i = 0, i_e = mLayout->count(); i < i_e; ++i)
+        for (int i = mLayout->count() - 1; 0 <= i; --i)
         {
             LXQtTaskGroup * group = qobject_cast<LXQtTaskGroup*>(mLayout->itemAt(i)->widget());
             if (nullptr != group)
-                group_list << group;
-        }
-        for (auto const group: group_list)
-        {
-            mLayout->removeWidget(group);
-            group->deleteLater();
+            {
+                mLayout->takeAt(i);
+                group->deleteLater();
+            }
         }
         mKnownWindows.clear();
     }

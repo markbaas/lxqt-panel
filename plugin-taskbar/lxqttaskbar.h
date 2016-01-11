@@ -41,7 +41,7 @@
 
 #include <QFrame>
 #include <QBoxLayout>
-#include <QHash>
+#include <QMap>
 #include "../panel/ilxqtpanel.h"
 #include <KWindowSystem/KWindowSystem>
 #include <KWindowSystem/KWindowInfo>
@@ -105,7 +105,7 @@ private:
     void buttonMove(LXQtTaskGroup * dst, LXQtTaskGroup * src, QPoint const & pos);
 
 private:
-    QHash<WId, LXQtTaskGroup*> mKnownWindows; //!< Ids of known windows (mapping to buttons/groups)
+    QMap<WId, LXQtTaskGroup*> mKnownWindows; //!< Ids of known windows (mapping to buttons/groups)
     LXQt::GridLayout *mLayout;
 
     // Settings
