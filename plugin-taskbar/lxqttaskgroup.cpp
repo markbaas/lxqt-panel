@@ -616,11 +616,11 @@ bool LXQtTaskGroup::onWindowChanged(WId window, NET::Properties prop, NET::Prope
         }
 
         if (prop.testFlag(NET::WMVisibleName) || prop.testFlag(NET::WMName))
-            std::for_each(buttons.begin(), buttons.end(), std::mem_fun(&LXQtTaskButton::updateText));
+            std::for_each(buttons.begin(), buttons.end(), std::mem_fn(&LXQtTaskButton::updateText));
 
         // XXX: we are setting window icon geometry -> don't need to handle NET::WMIconGeometry
         if (prop.testFlag(NET::WMIcon))
-            std::for_each(buttons.begin(), buttons.end(), std::mem_fun(&LXQtTaskButton::updateIcon));
+            std::for_each(buttons.begin(), buttons.end(), std::mem_fn(&LXQtTaskButton::updateIcon));
 
         if (prop.testFlag(NET::WMState))
         {
